@@ -1,0 +1,19 @@
+<html>
+<head>
+	<title>Test</title>
+	<script src="logging.js"></script>
+	<script>
+		logging.basicConfig({
+			handler: new logging.AJAXHandler('/')
+		});
+		var log = logging.getLogger('zupa');
+		log.debug('xxx');
+		log.error('yyy');
+		setTimeout(function() {
+			log.info('zzz');
+		}, 7000);
+	</script>
+</head>
+<body>
+</body>
+</html>
