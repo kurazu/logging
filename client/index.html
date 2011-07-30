@@ -4,13 +4,15 @@
 	<script src="logging.js"></script>
 	<script>
 		logging.basicConfig({
-			handler: new logging.AJAXHandler('/')
+			handler: new logging.AJAXHandler('/', 2000, true)
 		});
 		var log = logging.getLogger('zupa');
 		log.debug('xxx');
+		logging.warn('zzz');
 		log.error('yyy');
 		setTimeout(function() {
 			log.info('zzz');
+			logging.error('uuu');
 		}, 7000);
 	</script>
 </head>
