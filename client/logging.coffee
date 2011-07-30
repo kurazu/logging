@@ -48,11 +48,15 @@
 			setTimeout @bound_push, @timeout
 		push: () ->
 			bound_push = @bound_push
+			timeout = @timeout
+			if not @buffer.length
+				setTimeout bound_push, timeout
+				return
 			req = new XMLHttpRequest
 			req.onreadystatechange = () ->
 				if req.readyState == 4
 					if req.status == 200
-						setTimeout bound_push, @timeout
+						setTimeout bound_push, timeout
 					else
 						throw new Error req.status
 			req.open 'POST', @url, true
