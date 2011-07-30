@@ -3,9 +3,9 @@
 	<title>Test</title>
 	<script src="http://localhost:3000/logging.js"></script>
 	<script>
-		logging.basicConfig({
-			handler: new logging.AJAXHandler('http://localhost:3000', 2000, true)
-		});
+		//logging.basicConfig({
+		//	handler: new logging.AJAXHandler('http://localhost:3000', 2000, true)
+		//});
 		var log = logging.getLogger('zupa');
 		log.debug('xxx');
 		logging.warn('zzz');

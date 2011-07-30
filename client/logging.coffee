@@ -66,7 +66,8 @@
 
 	DEFAULT_LOGGER_CONFIG =
 		formatter: (name, severity, msg) -> "#{new Date} [#{severity}] [#{name}] #{msg}"
-		handler: new ConsoleHandler
+		handler: new AJAXHandler('SELF_URL', 5000, true)
+		#handler: new ConsoleHandler
 		level: LEVELS.NOTSET
 
 	config = DEFAULT_LOGGER_CONFIG
