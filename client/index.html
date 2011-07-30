@@ -1,18 +1,17 @@
 <html>
 <head>
 	<title>Test</title>
-	<script src="http://localhost:3000/logging.js"></script>
+	<script src="http://localhost:3000/logging.js?attach=true"></script>
 	<script>
-		//logging.basicConfig({
-		//	handler: new logging.AJAXHandler('http://localhost:3000', 2000, true)
-		//});
 		var log = logging.getLogger('zupa');
 		log.debug('xxx');
 		logging.warn('zzz');
 		log.error('yyy');
+		console.log('zupa');
 		setTimeout(function() {
 			log.info('zzz');
 			logging.error('uuu');
+			console.debug('m');
 		}, 7000);
 	</script>
 </head>

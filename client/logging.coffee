@@ -66,12 +66,21 @@
 
 	DEFAULT_LOGGER_CONFIG =
 		formatter: (name, severity, msg) -> "#{new Date} [#{severity}] [#{name}] #{msg}"
-		handler: new AJAXHandler('SELF_URL', 5000, true)
+		handler: new AJAXHandler('SELF_URL', 5000, false)
 		#handler: new ConsoleHandler
 		level: LEVELS.NOTSET
 
 	config = DEFAULT_LOGGER_CONFIG
 	rootLogger = new Logger ''
+	root_debug = rootLogger.debug.bind rootLogger
+	root_info = rootLogger.info.bind rootLogger
+	root_warn = rootLogger.warn.bind rootLogger
+	root_error = rootLogger.error.bind rootLogger
+
+	attach = () ->
+		console.log = root_info
+		console.debug = root_debug
+
 	loggers =
 		'': rootLogger
 
@@ -81,10 +90,11 @@
 		getLogger: (name='') ->
 			loggers[name] = new Logger name if not loggers.hasOwnProperty name
 			loggers[name]
-		debug: rootLogger.debug.bind rootLogger
-		info: rootLogger.info.bind rootLogger
-		warn: rootLogger.warn.bind rootLogger
-		error: rootLogger.error.bind rootLogger
+		debug: root_debug
+		info: root_info
+		warn: root_warn
+		error: root_error
 		ConsoleHandler: ConsoleHandler
 		AJAXHandler: AJAXHandler
+		attach: attach
 )()
