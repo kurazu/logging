@@ -1,15 +1,14 @@
 <html>
 <head>
 	<title>Test</title>
-	<script src="http://localhost:3000/logging.js?attach=true"></script>
+	<script src="http://localhost:3000/logging.js"></script>
 	<script>
-		var log = logging.getLogger('zupa');
-		log.debug('xxx');
+		console.debug('xxx');
 		logging.warn('zzz');
-		log.error('yyy');
+		logging.error('yyy');
 		console.log('zupa');
 		setTimeout(function() {
-			log.info('zzz');
+			console.info('zzz');
 			logging.error('uuu');
 			console.debug('m');
 		}, 7000);

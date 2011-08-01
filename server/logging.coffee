@@ -2,6 +2,12 @@ express = require 'express'
 fs = require 'fs'
 
 PORT = 3000
+METHODS =
+	log: console.log.bind console
+	info: console.info.bind console
+	warn: console.warn.bind console
+	error: console.error.bind console
+	debug: console.log.bind console # node has no console.debug
 
 app = express.createServer()
 app.configure () ->
@@ -9,21 +15,39 @@ app.configure () ->
 	app.use app.router
 
 app.get '/logging.js', (req, res, next) ->
-	attach = req.param 'attach', 'false'
-	attach = attach == 'true'
+	timeout = req.param 'timeout', '5000'
+	timeout = parseInt timeout, 10
+
+	echo = req.param 'echo', 'true'
+	echo = echo == 'true'
+
+	replace = req.param 'replace', 'true'
+	replace = replace == 'true'
+
 	host = req.header 'Host'
+
+	config_script = "logging.configure({echo: #{echo}, replace: #{replace}, timeout: #{timeout}, url: 'http://#{host}'});"
+
 	fs.readFile __dirname + '/../client/logging.js', 'utf-8', (err, data) ->
 		if err
 			next err
 		else
 			res.header 'Content-Type', 'application/x-javascript'
-			data = data.replace 'SELF_URL', "http://#{host}"
-			if attach
-				data += 'logging.attach();'
-			res.end data
+			res.write data
+			res.write config_script
+			res.end()
+
 app.post '/', (req, res, next) ->
-	msg = req.param 'msg'
-	console.log msg
+	data = JSON.parse req.param 'data'
+	for entry in data.messages
+		method = entry.method
+		msg = entry.msg
+		m = METHODS[method]
+		if not m
+			return next new Error "Unknown #{method} method"
+		else
+			m msg
+
 	res.header 'Content-Type', 'text/plain'
 	res.header 'Access-Control-Allow-Origin', '*'
 	res.end 'OK'
